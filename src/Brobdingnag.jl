@@ -9,7 +9,7 @@ end
 
 Brob( x::Float64 ) = Brob( sign(x) > 0, log(abs(x)) )
 
-convert( Float64, x::Brob) = (x.positive ? 1 : -1 )*exp( x.log )
+Base.convert( Float64, x::Brob) = (x.positive ? 1 : -1 )*exp( x.log )
 
 function Base.:+( x::Brob, y::Brob )
     sx = x.positive
