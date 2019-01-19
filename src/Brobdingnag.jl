@@ -2,14 +2,16 @@ module Brobdingnag
 
 export Brob
 
-struct Brob
+struct Brob <: Real
     positive::Bool
     log::Float64
 end
 
-Brob( x::Float64 ) = Brob( sign(x) > 0, log(abs(x)) )
+Brob( x::T ) where {T <: Real} = Brob( sign(x) > 0, log(abs(x)) )
 
-Base.convert( Float64, x::Brob) = (x.positive ? 1 : -1 )*exp( x.log )
+Base.convert( ::Type{Brob}, x::Float64) = Brob( x )
+
+Base.convert( ::Type{Float64}, x::Brob) = (x.positive ? 1 : -1 )*exp( x.log )
 
 function Base.:+( x::Brob, y::Brob )
     sx = x.positive
@@ -35,5 +37,16 @@ function Base.:^( x::Brob, n::Int )
     @assert( x.positive )
     return Brob( true, n*x.log )
 end
+
+Base.length(::Brob) = 1
+
+Base.iterate( x::Brob ) = (x,nothing)
+Base.iterate( x::Brob, ::Nothing ) = nothing
+
+Base.zero( ::Union{Brob,Type{Brob}} ) = Brob( true, -Inf )
+
+Base.ones( ::Type{Brob}, n::Int ) = fill( Brob(true, 0.0), n )
+
+Base.:<( x::Brob, y::Brob ) = ( x.positive < y.positive ) || xor( !x.positive, ( x.log < y.log ) )
 
 end # module
