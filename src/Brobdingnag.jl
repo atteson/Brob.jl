@@ -45,7 +45,13 @@ Base.zero( ::Union{Brob,Type{Brob}} ) = Brob( true, -Inf )
 Base.ones( ::Type{Brob}, n::Int ) = fill( Brob(true, 0.0), n )
 
 Base.:<( x::Brob, y::Brob ) = ( x.positive < y.positive ) || xor( !x.positive, ( x.log < y.log ) )
+Base.:<=( x::Brob, y::Brob ) = ( x.positive < y.positive ) || xor( !x.positive, ( x.log <= y.log ) )
 
-Base.promote_rule( ::Type{Brob}, ::Type{Float64} ) = Brob
+Base.promote_rule( ::Type{Brob}, ::Union{Type{Float64},Type{Int}} ) = Brob
+
+function Base.sqrt( x::Brob )
+    @assert( x.positive )
+    return Brob( true, 0.5*x.log )
+end
 
 end # module
