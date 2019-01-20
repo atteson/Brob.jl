@@ -14,12 +14,13 @@ Base.convert( ::Type{Brob}, x::Float64) = Brob( x )
 Base.convert( ::Type{Float64}, x::Brob) = (x.positive ? 1 : -1 )*exp( x.log )
 
 function Base.:+( x::Brob, y::Brob )
-    sx = x.positive
-    sy = y.positive
+    s = x.positive == y.positive ? 1 : -1
     if x.log > y.log
-        return Brob( sx, x.log + log(1 - exp(y.log - x.log)) )
+        return Brob( x.positive, x.log + log(1 + s * exp(y.log - x.log)) )
+    elseif x.log != -Inf || y.log != -Inf
+        return Brob( y.positive, y.log + log(1 + s * exp(x.log - y.log)) )
     else
-        return Brob( sy, y.log + log(1 - exp(x.log - y.log)) )
+        return x
     end
 end
 
