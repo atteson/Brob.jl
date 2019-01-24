@@ -54,4 +54,6 @@ function Base.sqrt( x::Brob )
     return Brob( true, 0.5*x.log )
 end
 
+Base.isnan( x::Brob ) = isnan( x.log )
+
 end # module
