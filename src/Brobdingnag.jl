@@ -2,7 +2,7 @@ module Brobdingnag
 
 export Brob
 
-struct Brob <: Real
+struct Brob <: AbstractFloat
     positive::Bool
     log::Float64
 end
