@@ -57,4 +57,15 @@ end
 
 Base.isnan( x::Brob ) = isnan( x.log )
 
+function Base.write( io::IO, x::Brob )
+    write( io, x.positive )
+    write( io, x.log )
+end
+
+function Base.read( io::IO, ::Type{Brob} )
+    positive = read( io, Bool )
+    log = read( io, Float64 )
+    return Brob( positive, log )
+end
+
 end # module
