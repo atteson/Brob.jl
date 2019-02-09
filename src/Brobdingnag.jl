@@ -25,6 +25,8 @@ function Base.:+( x::Brob, y::Brob )
     end
 end
 
+Base.:-( x::Brob ) = Brob( !x.positive, x.log )
+
 Base.:-( x::Brob, y::Brob ) = x + Brob(!y.positive, y.log)
 
 Base.:*( x::Brob, y::Brob ) = Brob( x.positive == y.positive, x.log + y.log )
