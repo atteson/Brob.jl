@@ -38,6 +38,8 @@ function Base.:^( x::Brob, n::Int )
     return Brob( true, n*x.log )
 end
 
+Base.log( x::Brob ) = x.positive ? Brob(x.log) : error( "Negative argument to log" )
+
 Base.length(::Brob) = 1
 
 Base.iterate( x::Brob ) = (x,nothing)
