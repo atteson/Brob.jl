@@ -40,6 +40,8 @@ end
 
 Base.log( x::Brob ) = x.positive ? Brob(x.log) : error( "Negative argument to log" )
 
+Base.exp( x::Brob ) = Brob( true, (-1)^(x.positive+1) * exp(x.log) )
+
 Base.length(::Brob) = 1
 
 Base.iterate( x::Brob ) = (x,nothing)
