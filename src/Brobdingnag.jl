@@ -51,8 +51,59 @@ Base.zero( ::Union{Brob,Type{Brob}} ) = Brob( true, -Inf )
 
 Base.ones( ::Type{Brob}, n::Int ) = fill( Brob(true, 0.0), n )
 
-Base.:<( x::Brob, y::Brob ) = ( x.positive < y.positive ) || xor( !x.positive, ( x.log < y.log ) )
-Base.:<=( x::Brob, y::Brob ) = ( x.positive < y.positive ) || xor( !x.positive, ( x.log <= y.log ) )
+ltdict = [
+    true, # -1, false, -1
+    true, # -1, false, 0
+    true, # -1, false, 1
+    true, # -1, true, -1
+    true, # -1, true, 0
+    true, # -1, true, 1
+    false, # 0, false, -1
+    false, # 0, false, 0
+    true, # 0, false, 1
+    true, # 0, true, -1
+    false, # 0, true, 0
+    false, # 0, true, 1
+    false, # 1, false, -1
+    false, # 1, false, 0
+    false, # 1, false, 1
+    false, # 1, true, -1
+    false, # 1, true, 0
+    false, # 1, true, 1
+]
+
+function Base.:<( x::Brob, y::Brob )
+    signcmp = cmp( x.positive, y.positive )
+    logcmp = cmp( x.log, y.log )
+    return ltdict[(signcmp+1)*6 + x.positive*3 +  logcmp + 2]
+end
+
+ledict = [
+    true, # -1, false, -1
+    true, # -1, false, 0
+    true, # -1, false, 1
+    true, # -1, true, -1
+    true, # -1, true, 0
+    true, # -1, true, 1
+    false, # 0, false, -1
+    true, # 0, false, 0
+    true, # 0, false, 1
+    true, # 0, true, -1
+    true, # 0, true, 0
+    false, # 0, true, 1
+    false, # 1, false, -1
+    false, # 1, false, 0
+    false, # 1, false, 1
+    false, # 1, true, -1
+    false, # 1, true, 0
+    false, # 1, true, 1
+]
+
+function Base.:<=( x::Brob, y::Brob )
+    signcmp = cmp( x.positive, y.positive )
+    logcmp = cmp( x.log, y.log )
+    return ledict[(signcmp+1)*6 + x.positive*3 +  logcmp + 2]
+end
 
 Base.promote_rule( ::Type{Brob}, ::Union{Type{Float64},Type{Int},Type{Float32}} ) = Brob
 
