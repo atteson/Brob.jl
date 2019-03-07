@@ -33,10 +33,7 @@ Base.:*( x::Brob, y::Brob ) = Brob( x.positive == y.positive, x.log + y.log )
 
 Base.:/( x::Brob, y::Brob ) = Brob( x.positive == y.positive, x.log - y.log )
 
-function Base.:^( x::Brob, n::Int )
-    @assert( x.positive )
-    return Brob( true, n*x.log )
-end
+Base.:^( x::Brob, n::Int ) = Brob( true, n*x.log )
 
 Base.log( x::Brob ) = x.positive ? Brob(x.log) : error( "Negative argument to log" )
 
