@@ -105,7 +105,7 @@ end
 Base.promote_rule( ::Type{Brob}, ::Union{Type{Float64},Type{Int},Type{Float32}} ) = Brob
 
 function Base.sqrt( x::Brob )
-    @assert( x.positive, "Trying to take sqrt of $x" )
+    @assert( x.positive || x.log != NaN, "Trying to take sqrt of $x" )
     return Brob( true, 0.5*x.log )
 end
 
