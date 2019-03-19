@@ -70,6 +70,9 @@ ltdict = [
 ]
 
 function Base.:<( x::Brob, y::Brob )
+    if isnan(x.log) || isnan(y.log)
+        return false
+    end
     signcmp = cmp( x.positive, y.positive )
     logcmp = cmp( x.log, y.log )
     return ltdict[(signcmp+1)*6 + x.positive*3 +  logcmp + 2]
@@ -97,6 +100,9 @@ ledict = [
 ]
 
 function Base.:<=( x::Brob, y::Brob )
+    if isnan(x.log) || isnan(y.log)
+        return false
+    end
     signcmp = cmp( x.positive, y.positive )
     logcmp = cmp( x.log, y.log )
     return ledict[(signcmp+1)*6 + x.positive*3 +  logcmp + 2]
