@@ -9,6 +9,8 @@ end
 
 Brob( x::T ) where {T <: Real} = Brob( !(sign(x) < 0), log(abs(x)) )
 
+Brob( x::Brob ) = Brob( x.positive, x.log )
+
 Base.convert( ::Type{Brob}, x::Float64) = Brob( x )
 
 Base.convert( ::Type{Float64}, x::Brob) = (x.positive ? 1 : -1 )*exp( x.log )
